@@ -2,58 +2,74 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import { json, checkStatus } from './utils';
 
-const Movie = (props) => {
+ function CurrencyResult(props){
   const {
-    Title,
-    Year,
-    imdbID,
-    Type,
-    Poster,
-  } = props.movie;
+    amount,
+    fromCur,
+    toCur,
+    result,
+  } = props;
 
   return (
     <div className="row">
       <div className="col-4 col-md-2 col-lg-1 mb-3">
-        <Link to={`/movie/${imdbID}/`}>
-          <img src={Poster} className="img-fluid" />
-        </Link>
+        <p>{amount} {fromCur} = </p>
+        <p>{result} {toCur}</p>
       </div>
-      <div className="col-8 col-md-10 col-lg-11 mb-3">
-        <Link to={`/movie/${imdbID}/`}>
-          <h4>{Title}</h4>
-          <p>{Type} | {Year}</p>
-        </Link>
-      </div>
+      {/* <div className="col-8 col-md-10 col-lg-11 mb-3"> */}
+        
+      {/* </div> */}
     </div>
   )
 }
 
-class MovieFinder extends React.Component {
+function Dropdown(props){
+  const {
+    selection,
+    onChange,
+  } = props;
+  return(
+  <select value={selection} onChange={onChange}>
+    <option value="USD">USD</option>
+    <option value="option2">Option 2</option>
+    <option value="option3">Option 3</option>
+  </select>
+  )
+}
+
+class ExchangeRate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchTerm: '',
-      results: [],
+      amount: 1.00,
+      fromCur: 'USD',
+      toCur: '',
+      result: 1.00,
       error: '',
     };
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleAmountChange = this.handleAmountChange.bind(this);
+    this.handleDropdownChange = this.handleDropdownChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({ searchTerm: event.target.value });
+  handleAmountChange(event) {
+    this.setState({ amount: event.target.value });
+  }
+
+  handleDropdownChange(event) {
+    this.setState({ fromCur: event.target.value });
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    let { searchTerm } = this.state;
-    searchTerm = searchTerm.trim();
-    if (!searchTerm) {
+    let { fromCur, toCur } = this.state;
+
+    if (!fromCur) {
       return;
     }
 
-    fetch(`https://www.omdbapi.com/?s=${searchTerm}&apikey=b7da8d63`)
+    fetch(`https://www.omdbapi.com/?s=${fromCur}&apikey=b7da8d63`)
       .then(checkStatus)
       .then(json)
       .then((data) => {
@@ -73,29 +89,27 @@ class MovieFinder extends React.Component {
   }
 
   render() {
-    const { searchTerm, results, error } = this.state;
+    const { amount, fromCur, toCur, error } = this.state;
 
     return (
       <div className="container">
         <div className="row">
-          <div className="col-12">
+          <div className="col-12">  
             <form onSubmit={this.handleSubmit} className="form-inline my-4">
               <input
-                type="text"
+                type="number"
                 className="form-control mr-sm-2"
-                placeholder="frozen"
-                value={searchTerm}
-                onChange={this.handleChange}
+                value={amount}
+                onChange={this.handleAmountChange}
               />
+              <Dropdown>selection={fromCur} onChange={this.handleDropdownChange} </Dropdown>
               <button type="submit" className="btn btn-primary">Submit</button>
             </form>
             {(() => {
               if (error) {
                 return error;
               }
-              return results.map((movie) => {
-                return <Movie key={movie.imdbID} movie={movie} />;
-              })
+              return <CurrencyResult fromCur={fromCur} amount={amount} toCur={toCur}/>;
             })()}
           </div>
         </div>
@@ -104,4 +118,4 @@ class MovieFinder extends React.Component {
   }
 }
 
-export default MovieFinder;
+export default ExchangeRate;

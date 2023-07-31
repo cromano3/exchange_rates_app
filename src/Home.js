@@ -25,14 +25,15 @@ import { json, checkStatus } from './utils';
 
 function Dropdown(props){
   const {
+    name,
     selection,
     onChange,
   } = props;
   return(
-  <select value={selection} onChange={onChange}>
+  <select name={name} value={selection} onChange={onChange}>
     <option value="USD">USD</option>
-    <option value="option2">Option 2</option>
-    <option value="option3">Option 3</option>
+    <option value="EUR">EUR</option>
+    <option value="VEVE">VEVE</option>
   </select>
   )
 }
@@ -43,7 +44,7 @@ class ExchangeRate extends React.Component {
     this.state = {
       amount: 1.00,
       fromCur: 'USD',
-      toCur: '',
+      toCur: 'EUR',
       result: 1.00,
       error: '',
     };
@@ -58,7 +59,8 @@ class ExchangeRate extends React.Component {
   }
 
   handleDropdownChange(event) {
-    this.setState({ fromCur: event.target.value });
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
   }
 
   handleSubmit(event) {
@@ -102,7 +104,8 @@ class ExchangeRate extends React.Component {
                 value={amount}
                 onChange={this.handleAmountChange}
               />
-              <Dropdown>selection={fromCur} onChange={this.handleDropdownChange} </Dropdown>
+              <Dropdown name="fromCur" selection={fromCur} onChange={this.handleDropdownChange}/> 
+              <Dropdown name="toCur" selection={toCur} onChange={this.handleDropdownChange}/> 
               <button type="submit" className="btn btn-primary">Submit</button>
             </form>
             {(() => {

@@ -23,7 +23,8 @@ const App = () => {
       </Navigation>
       <Switch>
         <Route path="/" exact component={Home} />
-        <Route path="/chart/:id" component={Chart} />
+        <Route path="/chart" exact component={Chart} />
+        <Route path="/chart/:currency" component={Chart} />
         <Route component={NotFound} />
       </Switch>
     </Router>

@@ -33,7 +33,7 @@ class Navigation extends React.Component {
                   <Link className="nav-link" to="/" exact>Exchange Rate</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/chart/:id">Value Chart</Link>
+                  <Link className="nav-link" to="/chart">Value Chart</Link>
                 </li>
               </ul>
             </div>

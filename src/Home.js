@@ -15,8 +15,7 @@ import './Home.css';
   return (
     <div className="row">
       <div className="col-12 text-center">
-        <p>{amount} {fromCur} = </p>
-        <p>{result} {toCur}</p>
+        <p><span className="from-result">{amount} {fromCur} = </span><span className="to-result">{result} {toCur}</span></p>
       </div>
     </div>
   )
@@ -29,7 +28,7 @@ function Dropdown(props){
     onChange,
   } = props;
   return(
-    <div className='col-12 col-sm-6 col-lg-3 text-center'>
+    <div className='col-12 col-m-5 col-lg-3 text-center'>
       <select className = "form-control" name={name} value={selection} onChange={onChange}>
         <option value="USD">USD - US Dollar</option>
         <option value="AUD">AUD - Australian Dollar</option>
@@ -82,11 +81,19 @@ class ExchangeRate extends React.Component {
 
     this.handleAmountChange = this.handleAmountChange.bind(this);
     this.handleDropdownChange = this.handleDropdownChange.bind(this);
+    this.handleSwap = this.handleSwap.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleAmountChange(event) {
     this.setState({ amount: event.target.value, submitted: false });
+  }
+
+  handleSwap(event) {
+
+    const { fromCur, toCur } = this.state;
+    this.setState({ toCur: fromCur, fromCur: toCur, submitted: false });
+
   }
 
   handleDropdownChange(event) {
@@ -128,14 +135,23 @@ class ExchangeRate extends React.Component {
         <div className="main-box-content">
             <form onSubmit={this.handleSubmit} className="form-inline my-4">
               <div className='row'>
+
                 <div className='col-12 col-lg-3 text-center'>
                   <input type="number" className="form-control" value={amount} onChange={this.handleAmountChange}/>
                 </div>
+
                 <Dropdown name="fromCur" selection={fromCur} onChange={this.handleDropdownChange}/>
+
+                <div className='col-12 col-m-2 col-lg-1 text-center'>
+                  <button type="button" class="btn btn-outline-primary btn-swap" onClick={this.handleSwap}>Swap</button>
+                </div>
+
                 <Dropdown name="toCur" selection={toCur} onChange={this.handleDropdownChange}/> 
-                <div className='col-12 col-lg-3 text-center'>
+
+                <div className='col-12 col-lg-2 text-center'>
                   <button type="submit" className="btn btn-primary">Convert</button>
                 </div>
+
               </div>
             </form>
             {(() => {

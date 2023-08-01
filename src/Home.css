@@ -20,3 +20,19 @@ select.form-control{
 .main-title{
   margin: 32px;
 }
+
+.from-result {
+  font-size: 1.4rem;
+  color: rgb(92, 102, 123);
+  font-weight: 600;
+}
+
+.to-result {
+  font-size: 2rem;
+  font-weight: 600;
+  color: rgb(46, 60, 87);
+}
+
+.btn-swap{
+  margin-bottom: 16px;
+}

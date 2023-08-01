@@ -1,9 +1,22 @@
 .form-control {
-  width: 200px;
-  margin-bottom: 8px;
+  width: 220px;
+  margin-bottom: 16px;
   display: inline-block;
 }
 
 select.form-control{
   appearance: auto;
+}
+
+.main-box{
+  border-radius: 8px;
+  box-shadow: rgba(35, 55, 80, 0.3) 0px 6px 12px;
+}
+
+.main-box-content{
+  padding: 22px;
+}
+
+.main-title{
+  margin: 32px;
 }

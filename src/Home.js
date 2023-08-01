@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import { json, checkStatus } from './utils';
 
+import './Home.css';
+
  function CurrencyResult(props){
   const {
     amount,
@@ -30,11 +32,13 @@ function Dropdown(props){
     onChange,
   } = props;
   return(
-  <select name={name} value={selection} onChange={onChange}>
-    <option value="USD">USD</option>
-    <option value="EUR">EUR</option>
-    <option value="VEVE">VEVE</option>
-  </select>
+    <div className='col-12 col-sm-6 col-lg-3 text-center'>
+      <select className = "form-control" name={name} value={selection} onChange={onChange}>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="VEVE">VEVE</option>
+      </select>
+    </div>
   )
 }
 
@@ -98,15 +102,21 @@ class ExchangeRate extends React.Component {
         <div className="row">
           <div className="col-12">  
             <form onSubmit={this.handleSubmit} className="form-inline my-4">
-              <input
-                type="number"
-                className="form-control mr-sm-2"
-                value={amount}
-                onChange={this.handleAmountChange}
-              />
-              <Dropdown name="fromCur" selection={fromCur} onChange={this.handleDropdownChange}/> 
-              <Dropdown name="toCur" selection={toCur} onChange={this.handleDropdownChange}/> 
-              <button type="submit" className="btn btn-primary">Submit</button>
+              <div className='row'>
+                <div className='col-12 col-sm-6 col-lg-3 text-center'>
+                  <input type="number" className="form-control" value={amount} onChange={this.handleAmountChange}/>
+                </div>
+               
+                <Dropdown name="fromCur" selection={fromCur} onChange={this.handleDropdownChange}/>
+                
+                
+                <Dropdown name="toCur" selection={toCur} onChange={this.handleDropdownChange}/> 
+                
+                <div className='col-12 col-sm-6 col-lg-3 text-center'>
+                  <button type="submit" className="btn btn-primary">Submit</button>
+                </div>
+
+              </div>
             </form>
             {(() => {
               if (error) {

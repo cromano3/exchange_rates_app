@@ -16,8 +16,8 @@ const NotFound = () => {
 
 const App = () => {
   return (
-    // <Router basename="/movie_2">
-    <Router>
+    // <Router ">
+    <Router basename="/romanoexchange">
       <Navigation>
 
       </Navigation>

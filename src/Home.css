@@ -1,0 +1,9 @@
+.form-control {
+  width: 200px;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+select.form-control{
+  appearance: auto;
+}

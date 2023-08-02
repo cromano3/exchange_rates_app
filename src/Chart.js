@@ -3,13 +3,15 @@ import { checkStatus, json } from './utils';
 
 import Dropdown from './Dropdown';
 
+import './Chart.css';
+
 function RatesResult(props){
   const {currency, rate} = props;
 
   return (
     <div className="row">
       <div className="col-12 text-center">
-        <p><span className="from-result">{currency}= </span><span className="to-result">{rate}</span></p>
+        <p className="result-p"><span className="cur-name">{currency} = </span><span className="cur-value">{rate}</span></p>
       </div>
     </div>
   )
@@ -19,6 +21,7 @@ class Chart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      title: '',
       currency: 'USD',
       data: null,
       submitted: false,
@@ -33,12 +36,11 @@ class Chart extends React.Component {
   componentDidMount () {
 
     const currency = this.props.match.params.currency;
-    this.setState({currency});
 
     if(currency){
+      this.setState({currency});
       this.fetchCurrencyData(currency);
     }
-
     
   }
 
@@ -63,13 +65,8 @@ class Chart extends React.Component {
        .then(checkStatus)
        .then(json)
        .then((data) => {
-          if (data.Response === 'False') {
-            throw new Error(data.Error);
-          }
-          if (data.Response === 'True') {
-            console.log(data);
-            this.setState({ data: data, error: '', submitted: true });
-          }
+          console.log(data);
+          this.setState({ data: data, error: '', submitted: true, title: currency });
         })
       .catch((error) => {
         this.setState({ error: error.message, submitted: true });
@@ -81,21 +78,23 @@ class Chart extends React.Component {
 
   render() {
 
-    const { currency, data, submitted, error } = this.state;
+    const { currency, data, submitted, error, title } = this.state;
 
     return(
       <div className='container page-container'>
-        <h1 className='main-title text-center'>{currency ? `Rates for ${currency}` : 'Check The Rates For A Currency'}</h1>
+        <h1 className='main-title text-center'>{title ? `Rates for ${title}` : 'Check The Rates For A Currency'}</h1>
         <div className="container main-box">
         <div className="main-box-content">
             <form onSubmit={this.handleSubmit} className="form-inline my-4">
               <div className='row'>
 
+              <div className='col-12 col-lg-6 text-center'>
                 <Dropdown name="currency" selection={currency} onChange={this.handleDropdownChange}/>
+              </div>
 
-                <div className='col-12 col-lg-2 text-center'>
-                  <button type="submit" className="btn btn-primary">Check Rates</button>
-                </div>
+              <div className='col-12 col-lg-6 text-center'>
+                <button type="submit" className="btn btn-primary">Check Rates</button>
+              </div>
 
               </div>
             </form>
@@ -105,7 +104,7 @@ class Chart extends React.Component {
                   return error;
                 }
                 return Object.entries(data.rates).map(([currency, rate]) => {
-                  return <RatesResult currency={currency} rate={rate} />;
+                  return <RatesResult key = {currency} currency={currency} rate={rate} />;
                 })
               }
             })()}

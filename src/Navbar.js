@@ -30,7 +30,7 @@ class Navigation extends React.Component {
             <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} id="navbarNav">
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item">
-                  <Link className="nav-link" to="/" exact>Exchange Rate</Link>
+                  <Link className="nav-link" to="/">Exchange Rate</Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/chart">Value Chart</Link>

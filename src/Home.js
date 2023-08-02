@@ -96,14 +96,17 @@ class ExchangeRate extends React.Component {
                   <input type="number" className="form-control" value={amount} onChange={this.handleAmountChange}/>
                 </div>
 
-                <Dropdown name="fromCur" selection={fromCur} onChange={this.handleDropdownChange}/>
-
-                <div className='col-12 col-m-2 col-lg-1 text-center'>
-                  <button type="button" class="btn btn-outline-primary btn-swap" onClick={this.handleSwap}>Swap</button>
+                <div className='col-12 col-m-5 col-lg-3 text-center'>
+                  <Dropdown name="fromCur" selection={fromCur} onChange={this.handleDropdownChange}/>
                 </div>
 
-                <Dropdown name="toCur" selection={toCur} onChange={this.handleDropdownChange}/> 
+                <div className='col-12 col-m-2 col-lg-1 text-center'>
+                  <button type="button" className="btn btn-outline-primary btn-swap" onClick={this.handleSwap}>Swap</button>
+                </div>
 
+                <div className='col-12 col-m-5 col-lg-3 text-center'>
+                  <Dropdown name="toCur" selection={toCur} onChange={this.handleDropdownChange}/> 
+                </div>
                 <div className='col-12 col-lg-2 text-center'>
                   <button type="submit" className="btn btn-primary">Convert</button>
                 </div>

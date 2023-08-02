@@ -7,7 +7,7 @@ function Dropdown(props){
     onChange,
   } = props;
   return(
-    <div className='col-12 col-m-5 col-lg-3 text-center'>
+    
       <select className = "form-control" name={name} value={selection} onChange={onChange}>
         <option value="USD">USD - US Dollar</option>
         <option value="AUD">AUD - Australian Dollar</option>
@@ -42,7 +42,7 @@ function Dropdown(props){
         <option value="TRY">TRY - Turkish Lira</option>
         <option value="ZAR">ZAR - South African Rand</option>
       </select>
-    </div>
+    
   )
 }
 

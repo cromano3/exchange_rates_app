@@ -1,0 +1,15 @@
+.cur-name{
+  font-size: 1.2rem;
+  color: rgb(92, 102, 123);
+  font-weight: 600;
+}
+
+.cur-value{
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: rgb(46, 60, 87);
+}
+
+.result-p{
+  margin-bottom: 0.5rem;
+}

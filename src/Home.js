@@ -92,7 +92,7 @@ class ExchangeRate extends React.Component {
 
     return (
       <div className='container page-container'>
-        <h1 className='main-title text-center'>Romano's Rates The Most Trusted For Currency Conversions</h1>
+        <h1 className='main-title text-center'>Romano's Rates: The Most Trusted For Currency Conversions</h1>
         <div className="container main-box">
         <div className="main-box-content">
           <div className='row'>

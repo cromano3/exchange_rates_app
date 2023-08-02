@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Navigation from './Navbar';
 import Home from './Home';
 import Chart from './Chart';
+import Footer from './Footer';
 
 import logo from './logo.svg';
 
@@ -16,11 +17,8 @@ const NotFound = () => {
 
 const App = () => {
   return (
-    // <Router ">
     <Router basename="/romanoexchange">
-      <Navigation>
-
-      </Navigation>
+      <Navigation/>
       <div className='main-container'>
         <Switch>
           <Route path="/" exact component={Home} />
@@ -28,8 +26,8 @@ const App = () => {
           <Route path="/chart/:currency" component={Chart} />
           <Route component={NotFound} />
         </Switch>
-
       </div>
+      <Footer/>
       
     </Router>
   );

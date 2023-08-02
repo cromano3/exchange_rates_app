@@ -68,6 +68,7 @@ class Chart extends React.Component {
        .then((data) => {
           console.log(data);
           this.setState({ data: data, error: '', submitted: true, title: currency });
+          this.props.history.replace(`/chart/${currency}`);
         })
       .catch((error) => {
         this.setState({ error: error.message, submitted: true });

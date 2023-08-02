@@ -37,6 +37,13 @@
   }
 }
 
+.main-container{
+  background-image: url('./currency-img.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 600px;
+}
+
 
 /* .navbar > .container-fluid{
   justify-content: flex-start;

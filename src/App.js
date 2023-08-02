@@ -21,12 +21,16 @@ const App = () => {
       <Navigation>
 
       </Navigation>
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/chart" exact component={Chart} />
-        <Route path="/chart/:currency" component={Chart} />
-        <Route component={NotFound} />
-      </Switch>
+      <div className='main-container'>
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/chart" exact component={Chart} />
+          <Route path="/chart/:currency" component={Chart} />
+          <Route component={NotFound} />
+        </Switch>
+
+      </div>
+      
     </Router>
   );
 }

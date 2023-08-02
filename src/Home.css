@@ -10,7 +10,9 @@ select.form-control{
 
 .main-box{
   border-radius: 8px;
+  background-color: rgb(255, 255, 255) !important;
   box-shadow: rgba(35, 55, 80, 0.3) 0px 6px 12px;
+  margin-bottom: 32px;
 }
 
 .main-box-sub-content{
@@ -18,7 +20,7 @@ select.form-control{
 }
 
 .main-title{
-  margin: 32px;
+  padding: 32px;
 }
 
 .from-result {
@@ -35,4 +37,11 @@ select.form-control{
 
 .btn-swap{
   margin-bottom: 16px;
+}
+h1{
+  color: rgb(210 220 223);
+}
+
+.page-container{
+  padding-bottom: 32px;
 }

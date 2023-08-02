@@ -2,6 +2,7 @@ import React from 'react';
 import { checkStatus, json } from './utils';
 
 import Dropdown from './Dropdown';
+import Tab from './Tab';
 
 import './Chart.css';
 
@@ -85,6 +86,11 @@ class Chart extends React.Component {
         <h1 className='main-title text-center'>{title ? `Rates for ${title}` : 'Check The Rates For A Currency'}</h1>
         <div className="container main-box">
         <div className="main-box-content">
+        <div className='row'>
+          <Tab title='Convert' active= {false}></Tab>
+          <Tab title='Rates' active= {true}></Tab>
+        </div>
+          <div className="main-box-sub-content">
             <form onSubmit={this.handleSubmit} className="form-inline my-4">
               <div className='row'>
 
@@ -98,6 +104,7 @@ class Chart extends React.Component {
 
               </div>
             </form>
+          </div>
             {(() => {
               if(submitted){
                 if (error) {

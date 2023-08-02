@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { json, checkStatus } from './utils';
 
 import Dropdown from './Dropdown';
+import Tab from './Tab';
 
 import './Home.css';
 
@@ -37,8 +38,13 @@ class ExchangeRate extends React.Component {
 
     this.handleAmountChange = this.handleAmountChange.bind(this);
     this.handleDropdownChange = this.handleDropdownChange.bind(this);
+    this.handleTabClick = this.handleTabClick.bind(this);
     this.handleSwap = this.handleSwap.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleTabClick(event) {
+    this.setState({ amount: event.target.value, submitted: false });
   }
 
   handleAmountChange(event) {
@@ -89,6 +95,15 @@ class ExchangeRate extends React.Component {
         <h1 className='main-title text-center'>Romano's Rates The Most Trusted For Currency Conversions</h1>
         <div className="container main-box">
         <div className="main-box-content">
+          <div className='row'>
+          
+            <Tab title='Convert' active= {true}></Tab>
+           
+            
+            <Tab title='Rates' active= {false}></Tab>
+            
+          </div>
+            <div className="main-box-sub-content">
             <form onSubmit={this.handleSubmit} className="form-inline my-4">
               <div className='row'>
 
@@ -113,6 +128,7 @@ class ExchangeRate extends React.Component {
 
               </div>
             </form>
+            </div>
             {(() => {
               if(submitted){
                 if (error) {

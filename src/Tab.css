@@ -1,0 +1,41 @@
+.active-tab{
+  font-family: Inter, sans-serif;
+  color: rgb(0, 111, 232);
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none; 
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.inactive-tab{
+  background-color: rgb(240, 245, 250) !important;
+}
+
+.inactive-tab{
+  font-family: Inter, sans-serif;
+  color: rgb(55, 80, 110);
+  font-size: 1.2rem;
+  font-weight: normal;
+  text-decoration: none;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.inactive-tab:hover {
+  opacity: 0.5;
+}
+
+.active-tab:hover{
+  opacity: 0.5;
+}
+
+.money-icon{
+  width: 24px;
+  height: 24px;
+}
+.convert-icon{
+  width: 20px;
+  height: 20px;
+  padding-right: 4px;
+}

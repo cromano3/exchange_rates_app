@@ -1,4 +1,6 @@
 import React from 'react';
+import Chart from 'chart.js/auto';
+
 import { Link } from "react-router-dom";
 import { json, checkStatus } from './utils';
 
@@ -36,11 +38,58 @@ class ExchangeRate extends React.Component {
       submitted: false,
     };
 
+    this.chartRef = React.createRef();
+
     this.handleAmountChange = this.handleAmountChange.bind(this);
     this.handleDropdownChange = this.handleDropdownChange.bind(this);
     this.handleTabClick = this.handleTabClick.bind(this);
     this.handleSwap = this.handleSwap.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.getHistoricalRates = this.getHistoricalRates.bind(this);
+    this.buildChart = this.buildChart.bind(this);
+  }
+
+  getHistoricalRates(base, quote) {
+    const endDate = new Date().toISOString().split('T')[0];
+    const startDate = new Date((new Date).getTime() - (30 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
+    fetch(`https://api.frankfurter.app/${startDate}..${endDate}?from=${base}&to=${quote}`)
+      .then(checkStatus)
+      .then(json)
+      .then(data => {
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        const chartLabels = Object.keys(data.rates);
+        const chartData = Object.values(data.rates).map(rate => rate[quote]);
+        const chartLabel = `${base}/${quote}`;
+        this.buildChart(chartLabels, chartData, chartLabel);
+      })
+      .catch(error => console.error(error.message));
+  }
+
+  buildChart(labels, data, label) {
+    const chartRef = this.chartRef.current.getContext("2d");
+    if (typeof this.chart !== "undefined") {
+      this.chart.destroy();
+    }
+    this.chart = new Chart(this.chartRef.current.getContext("2d"), {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: label,
+            data,
+            fill: false,
+            tension: 0,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+      }
+    })
   }
 
   handleTabClick(event) {
@@ -67,7 +116,7 @@ class ExchangeRate extends React.Component {
     event.preventDefault();
     let { fromCur, toCur, amount } = this.state;
 
-    if (!fromCur) {
+    if (!fromCur || !toCur || fromCur == toCur) {
       return;
     }
 
@@ -80,11 +129,14 @@ class ExchangeRate extends React.Component {
         }
         console.log(data);
         this.setState({ result: data.rates[toCur], error: '', submitted: true });
+        this.getHistoricalRates(fromCur, toCur);
       })
       .catch((error) => {
         this.setState({ error: error.message, submitted: true });
         console.log(error);
       })
+
+    
   }
 
   render() {
@@ -134,10 +186,16 @@ class ExchangeRate extends React.Component {
                 if (error) {
                   return error;
                 }
-                return <CurrencyResult fromCur={fromCur} amount={amount} toCur={toCur} result={result}/>;
+                return (
+                  <div>
+                    <CurrencyResult fromCur={fromCur} amount={amount} toCur={toCur} result={result}/> 
+                    <canvas ref={this.chartRef} />
+                  </div>
+                );
               }
               
             })()}
+            
           </div>
          </div>
       </div>

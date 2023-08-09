@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+
 import Chart from 'chart.js/auto';
 
 import { Link } from "react-router-dom";
@@ -26,31 +27,19 @@ import './Home.css';
   )
 }
 
-class ExchangeRate extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      amount: 1.00,
-      fromCur: 'USD',
-      toCur: 'EUR',
-      result: 1.00,
-      error: '',
-      submitted: false,
-    };
+const ExchangeRate = (pros) => {
 
-    this.chartRef = React.createRef();
+  const [amount, setAmount] = useState(1.00)
+  const [fromCur, setFromCur] = useState('USD')
+  const [toCur, setToCur] = useState('EUR')
+  const [result, setResult] = useState(1.00)
+  const [error, setError] = useState('')
+  const [submitted, setSubmitted] = useState(false)
 
-    this.handleAmountChange = this.handleAmountChange.bind(this);
-    this.handleDropdownChange = this.handleDropdownChange.bind(this);
-    this.handleTabClick = this.handleTabClick.bind(this);
-    this.handleSwap = this.handleSwap.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+  const chartRef = useRef(null);
+  const chart = useRef(null);
 
-    this.getHistoricalRates = this.getHistoricalRates.bind(this);
-    this.buildChart = this.buildChart.bind(this);
-  }
-
-  getHistoricalRates(base, quote) {
+  const getHistoricalRates = (base, quote) => {
     const endDate = new Date().toISOString().split('T')[0];
     const startDate = new Date((new Date).getTime() - (30 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
     fetch(`https://api.frankfurter.app/${startDate}..${endDate}?from=${base}&to=${quote}`)
@@ -63,17 +52,17 @@ class ExchangeRate extends React.Component {
         const chartLabels = Object.keys(data.rates);
         const chartData = Object.values(data.rates).map(rate => rate[quote]);
         const chartLabel = `${base}/${quote}`;
-        this.buildChart(chartLabels, chartData, chartLabel);
+        buildChart(chartLabels, chartData, chartLabel);
       })
       .catch(error => console.error(error.message));
   }
 
-  buildChart(labels, data, label) {
-    const chartRef = this.chartRef.current.getContext("2d");
-    if (typeof this.chart !== "undefined") {
-      this.chart.destroy();
+  const buildChart = (labels, data, label) => {
+    const context = chartRef.current.getContext("2d");
+    if (chart.current) {
+      chart.current.destroy();
     }
-    this.chart = new Chart(this.chartRef.current.getContext("2d"), {
+    chart.current = new Chart(context, {
       type: 'line',
       data: {
         labels,
@@ -92,29 +81,36 @@ class ExchangeRate extends React.Component {
     })
   }
 
-  handleTabClick(event) {
-    this.setState({ amount: event.target.value, submitted: false });
+  // const handleTabClick = (event) => {
+  //   setAmount(event.target.value);
+  //   setSubmitted(false);
+  // }
+
+  const handleAmountChange = (event) => {
+    setAmount(event.target.value);
+    setSubmitted(false);
   }
 
-  handleAmountChange(event) {
-    this.setState({ amount: event.target.value, submitted: false });
+  const handleSwap = () => {
+    setToCur(fromCur);
+    setFromCur(toCur);
+    setSubmitted(false);
   }
 
-  handleSwap(event) {
-
-    const { fromCur, toCur } = this.state;
-    this.setState({ toCur: fromCur, fromCur: toCur, submitted: false });
-
-  }
-
-  handleDropdownChange(event) {
+  const handleDropdownChange = (event) => {
     const { name, value } = event.target;
-    this.setState({ [name]: value, submitted: false });
+
+    if(name == 'fromCur'){
+      setFromCur(value)
+    }
+
+    if(name == 'toCur'){
+      setToCur(value)
+    }
   }
 
-  handleSubmit(event) {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    let { fromCur, toCur, amount } = this.state;
 
     if (!fromCur || !toCur || fromCur == toCur) {
       return;
@@ -128,19 +124,21 @@ class ExchangeRate extends React.Component {
           throw new Error(data.Error);
         }
         console.log(data);
-        this.setState({ result: data.rates[toCur], error: '', submitted: true });
-        this.getHistoricalRates(fromCur, toCur);
+        setResult(data.rates[toCur]);
+        setError('');
+        setSubmitted(true);
+
+        getHistoricalRates(fromCur, toCur);
       })
-      .catch((error) => {
-        this.setState({ error: error.message, submitted: true });
-        console.log(error);
+      .catch((thrownError) => {
+        setError(thrownError.message);
+        setSubmitted(true);
+
+        console.log(thrownError);
       })
 
     
   }
-
-  render() {
-    const { amount, fromCur, toCur, error, result, submitted } = this.state;
 
     return (
       <div className='container page-container'>
@@ -156,23 +154,23 @@ class ExchangeRate extends React.Component {
             
           </div>
             <div className="main-box-sub-content">
-            <form onSubmit={this.handleSubmit} className="form-inline my-4">
+            <form onSubmit={handleSubmit} className="form-inline my-4">
               <div className='row'>
 
                 <div className='col-12 col-lg-3 text-center'>
-                  <input type="number" className="form-control" value={amount} onChange={this.handleAmountChange}/>
+                  <input type="number" className="form-control" value={amount} onChange={handleAmountChange}/>
                 </div>
 
                 <div className='col-12 col-m-5 col-lg-3 text-center'>
-                  <Dropdown name="fromCur" selection={fromCur} onChange={this.handleDropdownChange}/>
+                  <Dropdown name="fromCur" selection={fromCur} onChange={handleDropdownChange}/>
                 </div>
 
                 <div className='col-12 col-m-2 col-lg-1 text-center'>
-                  <button type="button" className="btn btn-outline-primary btn-swap" onClick={this.handleSwap}>Swap</button>
+                  <button type="button" className="btn btn-outline-primary btn-swap" onClick={handleSwap}>Swap</button>
                 </div>
 
                 <div className='col-12 col-m-5 col-lg-3 text-center'>
-                  <Dropdown name="toCur" selection={toCur} onChange={this.handleDropdownChange}/> 
+                  <Dropdown name="toCur" selection={toCur} onChange={handleDropdownChange}/> 
                 </div>
                 <div className='col-12 col-lg-2 text-center'>
                   <button type="submit" className="btn btn-primary">Convert</button>
@@ -189,7 +187,7 @@ class ExchangeRate extends React.Component {
                 return (
                   <div>
                     <CurrencyResult fromCur={fromCur} amount={amount} toCur={toCur} result={result}/> 
-                    <canvas ref={this.chartRef} />
+                    <canvas ref={chartRef} />
                   </div>
                 );
               }
@@ -200,7 +198,7 @@ class ExchangeRate extends React.Component {
          </div>
       </div>
     )
-  }
+  
 }
 
 export default ExchangeRate;
